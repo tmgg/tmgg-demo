@@ -37,11 +37,18 @@
         </dependency>
     </dependencies>
 
-    <!-- 使用华为云的maven镜像，阿里云的测试,发布的jar包延迟了一周左右-->
+
     <repositories>
+        <!-- 使用华为云的maven镜像，阿里云的测试,发布的jar包延迟了一周左右-->
         <repository>
             <id>huaweicloud</id>
             <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+        </repository>
+
+        <!-- 官方地址，如果镜像站点没有的话 -->
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
     </repositories>
 
