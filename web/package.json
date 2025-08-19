@@ -1,6 +1,5 @@
 {
   "devDependencies" : {
-    "@types/lodash" : "^4.14.200",
     "@types/react" : "^18.0.0",
     "@types/react-dom" : "^18.0.0",
     "@types/react-lazylog" : "^4.5.1",
@@ -13,21 +12,9 @@
   },
   "version" : "1.0.1",
   "dependencies" : {
-    "@ant-design/icons" : "^5.4.0",
-    "@tinymce/tinymce-react" : "^5.0.0",
-    "@tmgg/tmgg-base" : "1.1.23",
-    "@tmgg/tmgg-commons-lang" : "1.1.23",
-    "@tmgg/tmgg-system" : "1.1.23",
-    "antd" : "^5.26.1",
-    "antd-img-crop" : "^4.23.0",
-    "axios" : "^1.8.3",
-    "codemirror" : "^5.0.0",
-    "dayjs" : "^1.11.13",
-    "react" : "^18.2.0",
-    "react-amap" : "^1.2.8",
-    "react-dom" : "^18.2.0",
-    "react-lazylog" : "^4.5.3",
-    "umi" : "^4.0.0",
-    "qs": "^6.14.0"
+    "@tmgg/tmgg-system" : "1.1.25",
+    "@tmgg/tmgg-system-flowable" : "1.1.25",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
