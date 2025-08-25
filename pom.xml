@@ -45,10 +45,10 @@
             <url>https://mirrors.huaweicloud.com/repository/maven/</url>
         </repository>
 
-        <!-- 官方地址，如果镜像站点没有的话 -->
+        <!-- 中央仓库或镜像都有延迟，gitpack没有延迟-->
         <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
