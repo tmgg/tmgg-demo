@@ -1,22 +1,20 @@
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node AS web
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:1.1.34 AS web
+
 WORKDIR /build
-# 缓存
+
 ADD web/package.json ./
-RUN npm install
+RUN pnpm install
 
-# 打包
 ADD web/ ./
-RUN npm run build
+RUN pnpm run build
 
 
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-java AS java
-# 缓存
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.34 AS java
+WORKDIR /build
 ADD pom.xml ./
-RUN mvn dependency:go-offline --fail-never
-
-# 打包
+RUN mvn dependency:go-offline  -q --fail-never
 ADD . .
-RUN mvn clean package -DskipTests  &&    mv target/*.jar /app.jar && rm -rf *
+RUN mvn clean package -DskipTests -q  &&    mv target/*.jar /app.jar && rm -rf *
 
 
 FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-jdk

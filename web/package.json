@@ -12,8 +12,8 @@
   },
   "version" : "1.0.1",
   "dependencies" : {
-    "@tmgg/tmgg-system" : "1.1.25",
-    "@tmgg/tmgg-system-flowable" : "1.1.25",
+    "@tmgg/tmgg-system" : "1.1.34",
+    "@tmgg/tmgg-system-flowable" : "1.1.34",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   }
