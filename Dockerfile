@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:1.1.34 AS web
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:1.1.54 AS web
 
 WORKDIR /build
 
@@ -9,7 +9,7 @@ ADD web/ ./
 RUN pnpm run build
 
 
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.34 AS java
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.54 AS java
 
 WORKDIR /build
 
