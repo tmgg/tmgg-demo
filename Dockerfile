@@ -17,7 +17,7 @@ ADD pom.xml ./
 RUN mvn package -DskipTests  --fail-never
 
 ADD . .
-RUN mvn clean package -DskipTests -q  &&    mv target/*.jar /home/app.jar && rm -rf *
+RUN mvn clean package -DskipTests -q  &&    mv target/app.jar /home/app.jar && rm -rf *
 
 
 FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-jdk
