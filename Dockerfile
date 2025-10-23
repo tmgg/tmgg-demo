@@ -1,16 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:1.1.54 AS web
-
-WORKDIR /build
-
-ADD web/package.json ./
-RUN pnpm install
-
-ADD web/ ./
-RUN pnpm run build
-
-
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.54 AS java
-
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.60 AS java
 WORKDIR /build
 
 ADD pom.xml ./
@@ -18,6 +6,16 @@ RUN mvn package -DskipTests  --fail-never
 
 ADD . .
 RUN mvn clean package -DskipTests -q  &&    mv target/app.jar /home/app.jar && rm -rf *
+
+
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:1.1.60 AS web
+WORKDIR /build
+
+ADD web/package.json ./
+RUN pnpm install
+
+ADD web/ ./
+RUN pnpm run build
 
 
 FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-jdk
