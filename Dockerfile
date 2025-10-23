@@ -4,7 +4,7 @@ WORKDIR /build
 ADD pom.xml ./
 RUN mvn package -DskipTests  --fail-never
 
-ADD . .
+ADD src src
 RUN mvn clean package -DskipTests -q  &&    mv target/app.jar /home/app.jar && rm -rf *
 
 
