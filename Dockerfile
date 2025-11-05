@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.60 AS java
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:2.0.1 AS java
 WORKDIR /build
 
 ADD pom.xml ./
@@ -8,7 +8,7 @@ ADD src src
 RUN mvn clean package -DskipTests -q  &&    mv target/app.jar /home/app.jar && rm -rf *
 
 
-FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:1.1.60 AS web
+FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-node:2.0.1 AS web
 WORKDIR /build
 
 ADD web/package.json ./
