@@ -2,7 +2,7 @@ FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-maven:1.1.60 AS java
 WORKDIR /build
 
 ADD pom.xml ./
-RUN mvn package -DskipTests  --fail-never
+RUN mvn package -DskipTests -q --fail-never
 
 ADD src src
 RUN mvn clean package -DskipTests -q  &&    mv target/app.jar /home/app.jar && rm -rf *
@@ -20,7 +20,7 @@ RUN pnpm run build
 
 FROM registry.cn-hangzhou.aliyuncs.com/mxvc/tmgg-base-jdk
 WORKDIR /home
-COPY --from=JAVA /home/ ./
+COPY --from=java /home/ ./
 COPY --from=web /build/dist/ ./static/
 EXPOSE 80
 
