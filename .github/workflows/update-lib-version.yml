@@ -1,9 +1,8 @@
-name: Update Parent Version (Directly)
+name: Update tmgg-system-parent Version (from Maven Central metadata)
 
 on:
-  push:
   schedule:
-    # 每天 UTC 时间 08:00 执行一次，可自定义
+    # 每天 UTC 08:00 执行，可自定
     - cron: '0 8 * * *'
   workflow_dispatch:  # 允许手动触发
 
@@ -12,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # 获取完整历史，以便能 push
+          fetch-depth: 0  # 获取全部历史，以便 push
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -26,57 +25,70 @@ jobs:
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
-      - name: Fetch latest version of the parent from Maven Central
-        id: fetch-latest-version
+      - name: Fetch maven-metadata.xml for tmgg-system-parent
+        id: fetch-metadata
         run: |
           GROUP_ID=io.github.tmgg
           ARTIFACT_ID=tmgg-system-parent
 
-          # Maven Central 查询 API
           GROUP_PATH=$(echo $GROUP_ID | tr '.' '/')
-          API_URL="https://search.maven.org/solrsearch/select?q=g:${GROUP_ID}+AND+a:${ARTIFACT_ID}&core=gav&rows=1&wt=json"
-          echo "构建查询地址 ${API_URL}"
-          echo "正在查询 ${GROUP_ID}:${ARTIFACT_ID} 的最新版本..."
-          RESPONSE=$(curl -s "${API_URL}")
+          METADATA_URL="https://repo.maven.apache.org/maven2/${GROUP_PATH}/${ARTIFACT_ID}/maven-metadata.xml"
 
-          # 提取 latestVersion 字段
-          LATEST_VERSION=$(echo "$RESPONSE" | jq -r '.response.docs[0].latestVersion')
+          echo "Fetching metadata from: $METADATA_URL"
+          curl -s -o maven-metadata.xml "$METADATA_URL"
 
-          if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" = "null" ]; then
-            echo "❌ 无法从 Maven Central 获取最新版本，请检查 groupId 和 artifactId 是否正确。"
-            echo "你设置的 groupId=${GROUP_ID}, artifactId=${ARTIFACT_ID}"
+          # 检查是否下载成功
+          if [ ! -s maven-metadata.xml ]; then
+            echo "❌ 无法下载 maven-metadata.xml，可能该构件不存在于此路径或网络错误。"
+            echo "请确认："
+            echo "  groupId = $GROUP_ID"
+            echo "  artifactId = $ARTIFACT_ID"
+            echo "  metadata URL = $METADATA_URL"
             exit 1
           fi
 
-          echo "✅ 最新版本是: $LATEST_VERSION"
+          # 提取最新版本：优先取 <latest>，如果没有则取 <version> 中最大的
+          if xmllint --xpath "string(//latest)" maven-metadata.xml >/dev/null 2>&1; then
+            LATEST_VERSION=$(xmllint --xpath "string(//latest)" maven-metadata.xml)
+          else
+            # 如果没有 <latest> 节点，则从 <version> 列表中取最后一个（即最新）
+            LATEST_VERSION=$(xmllint --xpath "//version[last()]" maven-metadata.xml | grep -oP '(?<=<version>).*(?=</version>)')
+          fi
+
+          if [ -z "$LATEST_VERSION" ]; then
+            echo "❌ 无法从 maven-metadata.xml 中解析出最新版本。"
+            exit 1
+          fi
+
+          echo "✅ 解析到的最新版本是: $LATEST_VERSION"
           echo "latest_version=$LATEST_VERSION" >> $GITHUB_OUTPUT
 
       - name: Update parent version in pom.xml
         run: |
           GROUP_ID=io.github.tmgg
           ARTIFACT_ID=tmgg-system-parent
-          LATEST_VERSION=${{ steps.fetch-latest-version.outputs.latest_version }}
+          LATEST_VERSION=${{ steps.fetch-metadata.outputs.latest_version }}
 
           echo "正在将 parent ${GROUP_ID}:${ARTIFACT_ID} 的版本更新为: $LATEST_VERSION"
 
-          # 使用 xmlstarlet 直接修改 pom.xml 中的 <parent><version>
+          # 使用 xmlstarlet 直接更新 <parent><version>
           xmlstarlet ed -L \
             -N x="http://maven.apache.org/POM/4.0.0" \
             -u "/x:project/x:parent/x:version" \
             -v "$LATEST_VERSION" pom.xml
 
-          echo "✅ pom.xml 中的 parent 版本已更新."
+          echo "✅ pom.xml 中的 parent 版本已更新为 $LATEST_VERSION"
 
-      - name: Commit and Push updated pom.xml
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
           git add pom.xml
           if git diff --quiet && git diff --staged --quiet; then
-            echo "ℹ️  没有版本变更，无需提交。"
+            echo "ℹ️ 没有版本变更，无需提交。"
           else
-            git commit -m "chore(deps): 自动更新 parent ${GROUP_ID}:${ARTIFACT_ID} 到最新版本 $LATEST_VERSION"
+            git commit -m "chore(deps): 自动更新 parent io.github.tmgg:tmgg-system-parent 到最新版本 ${{ steps.fetch-metadata.outputs.latest_version }}"
             git push
             echo "✅ 已提交并推送更新后的 pom.xml"
           fi
