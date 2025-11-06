@@ -14,7 +14,7 @@
   "dependencies" : {
     "@tmgg/tmgg-system" : "2.0.1",
     "@tmgg/tmgg-system-flowable" : "2.0.1",
-    "@ant-design/icons": "^5.4.0",
+    "@ant-design/icons": "^6.1.0",
     "@tinymce/tinymce-react": "^5.0.0",
     "@tmgg/tmgg-base": "2.0.1",
     "@tmgg/tmgg-commons-lang": "2.0.1",
