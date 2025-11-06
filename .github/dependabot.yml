@@ -12,14 +12,18 @@ updates:
       - dependency-name: "react-dom"
       - dependency-name: "echarts"
       - dependency-name: "@tinymce/tinymce-react"
+    update-types: [ "version-update:semver-patch", "version-update:semver-minor" ]
+    schedule:
+      interval: "daily"
+
+
+  - package-ecosystem: "maven"
+    directory: "/"
+    update-types: [ "version-update:semver-patch", "version-update:semver-minor" ]
     schedule:
       interval: "daily"
 
   - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "daily"
