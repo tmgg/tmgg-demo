@@ -1,6 +1,7 @@
 name: Update Parent Version (Directly)
 
 on:
+  push:
   schedule:
     # 每天 UTC 时间 08:00 执行一次，可自定义
     - cron: '0 8 * * *'
@@ -28,14 +29,13 @@ jobs:
       - name: Fetch latest version of the parent from Maven Central
         id: fetch-latest-version
         run: |
-          # === 请根据你的实际 parent groupId 和 artifactId 修改下面两行 ===
           GROUP_ID=io.github.tmgg
           ARTIFACT_ID=tmgg-system-parent
 
           # Maven Central 查询 API
           GROUP_PATH=$(echo $GROUP_ID | tr '.' '/')
           API_URL="https://search.maven.org/solrsearch/select?q=g:${GROUP_ID}+AND+a:${ARTIFACT_ID}&core=gav&rows=1&wt=json"
-
+          echo "构建查询地址 ${API_URL}"
           echo "正在查询 ${GROUP_ID}:${ARTIFACT_ID} 的最新版本..."
           RESPONSE=$(curl -s "${API_URL}")
 
