@@ -5,6 +5,7 @@ on:
     # 每天 UTC 08:00 执行，可自定
     - cron: '0 8 * * *'
   workflow_dispatch:  # 允许手动触发
+  push:
 
 jobs:
   update-parent:
@@ -47,13 +48,9 @@ jobs:
             exit 1
           fi
 
-          # 提取最新版本：优先取 <latest>，如果没有则取 <version> 中最大的
-          if xmllint --xpath "string(//latest)" maven-metadata.xml >/dev/null 2>&1; then
-            LATEST_VERSION=$(xmllint --xpath "string(//latest)" maven-metadata.xml)
-          else
-            # 如果没有 <latest> 节点，则从 <version> 列表中取最后一个（即最新）
-            LATEST_VERSION=$(xmllint --xpath "//version[last()]" maven-metadata.xml | grep -oP '(?<=<version>).*(?=</version>)')
-          fi
+          # 提取最新版本：取 <latest>
+          LATEST_VERSION=$(xmllint --xpath "string(//latest)" maven-metadata.xml)
+       
 
           if [ -z "$LATEST_VERSION" ]; then
             echo "❌ 无法从 maven-metadata.xml 中解析出最新版本。"
