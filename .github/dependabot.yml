@@ -7,11 +7,6 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/web"
-    ignore:
-      - dependency-name: "react"
-      - dependency-name: "react-dom"
-      - dependency-name: "echarts"
-      - dependency-name: "@tinymce/tinymce-react"
     update-types: [ "version-update:semver-patch", "version-update:semver-minor" ]
     schedule:
       interval: "daily"
