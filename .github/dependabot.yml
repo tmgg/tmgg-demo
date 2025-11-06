@@ -5,15 +5,21 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm" 
-    directory: "/web" 
+  - package-ecosystem: "npm"
+    directory: "/web"
+    ignore:
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "echarts"
+      - dependency-name: "@tinymce/tinymce-react"
     schedule:
       interval: "daily"
-  - package-ecosystem: "docker" 
-    directory: "/" 
+
+  - package-ecosystem: "docker"
+    directory: "/"
     schedule:
       interval: "daily"
-  - package-ecosystem: "maven" 
-    directory: "/" 
+  - package-ecosystem: "maven"
+    directory: "/"
     schedule:
       interval: "daily"
