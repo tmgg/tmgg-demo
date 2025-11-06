@@ -24,7 +24,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Install xmlstarlet
-        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet libxml2-utils
 
       - name: Fetch maven-metadata.xml for tmgg-system-parent
         id: fetch-metadata
