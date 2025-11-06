@@ -53,8 +53,8 @@ jobs:
 
       - name: Update parent version in pom.xml
         run: |
-          GROUP_ID=com.example
-          ARTIFACT_ID=my-parent
+          GROUP_ID=io.github.tmgg
+          ARTIFACT_ID=tmgg-system-parent
           LATEST_VERSION=${{ steps.fetch-latest-version.outputs.latest_version }}
 
           echo "正在将 parent ${GROUP_ID}:${ARTIFACT_ID} 的版本更新为: $LATEST_VERSION"
