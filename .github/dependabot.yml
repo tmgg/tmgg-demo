@@ -7,14 +7,12 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/web"
-    update-types: [ "version-update:semver-patch", "version-update:semver-minor" ]
     schedule:
       interval: "daily"
 
 
   - package-ecosystem: "maven"
     directory: "/"
-    update-types: [ "version-update:semver-patch", "version-update:semver-minor" ]
     schedule:
       interval: "daily"
 
