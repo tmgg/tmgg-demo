@@ -6,6 +6,7 @@ db_password: 123456
 
 spring:
   profiles:
+    # 注意 必须包含框架的default
     active: default
 
   application:
