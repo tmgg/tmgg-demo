@@ -12,8 +12,8 @@ spring:
     name: tmgg-demo
 
 
-
 logging:
   level:
     io.tmgg: info
-
+sys:
+  reset-admin-pwd: okjt@20251110
