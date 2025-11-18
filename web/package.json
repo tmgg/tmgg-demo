@@ -15,7 +15,7 @@
     "@tmgg/tmgg-system" : "2.1.0",
     "@tmgg/tmgg-system-flowable" : "2.1.0",
     "@ant-design/icons": "^5.4.0",
-    "@tmgg/tmgg-base": "2.1.0",
+    "@tmgg/tmgg-base": "2.2.0",
     "@tmgg/tmgg-commons-lang": "2.1.0",
     "@umijs/types": "^3.5.43",
     "antd": "^5.26.1",
